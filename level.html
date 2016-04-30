@@ -1,0 +1,4093 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>level.c</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="hit.html">
+                  hit.c
+                </a>
+              
+                
+                <a class="source" href="init.html">
+                  init.c
+                </a>
+              
+                
+                <a class="source" href="inventory.html">
+                  inventory.c
+                </a>
+              
+                
+                <a class="source" href="level.html">
+                  level.c
+                </a>
+              
+                
+                <a class="source" href="machdep.html">
+                  machdep.c
+                </a>
+              
+                
+                <a class="source" href="main.html">
+                  main.c
+                </a>
+              
+                
+                <a class="source" href="message.html">
+                  message.c
+                </a>
+              
+                
+                <a class="source" href="monster.html">
+                  monster.c
+                </a>
+              
+                
+                <a class="source" href="move.html">
+                  move.c
+                </a>
+              
+                
+                <a class="source" href="object.html">
+                  object.c
+                </a>
+              
+                
+                <a class="source" href="pack.html">
+                  pack.c
+                </a>
+              
+                
+                <a class="source" href="pathnames.html">
+                  pathnames.h
+                </a>
+              
+                
+                <a class="source" href="play.html">
+                  play.c
+                </a>
+              
+                
+                <a class="source" href="random.html">
+                  random.c
+                </a>
+              
+                
+                <a class="source" href="ring.html">
+                  ring.c
+                </a>
+              
+                
+                <a class="source" href="rogue.html">
+                  rogue.h
+                </a>
+              
+                
+                <a class="source" href="room.html">
+                  room.c
+                </a>
+              
+                
+                <a class="source" href="save.html">
+                  save.c
+                </a>
+              
+                
+                <a class="source" href="score.html">
+                  score.c
+                </a>
+              
+                
+                <a class="source" href="spec_hit.html">
+                  spec_hit.c
+                </a>
+              
+                
+                <a class="source" href="throw.html">
+                  throw.c
+                </a>
+              
+                
+                <a class="source" href="trap.html">
+                  trap.c
+                </a>
+              
+                
+                <a class="source" href="use.html">
+                  use.c
+                </a>
+              
+                
+                <a class="source" href="zap.html">
+                  zap.c
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>level.c</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*-
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * Copyright (c) <span class="hljs-number">1988</span>, <span class="hljs-number">1993</span>
+ *	The Regents of the University of California.  All rights reserved.
+ *</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * This code is derived from software contributed to Berkeley by
+ * Timothy C. Stoehr.
+ *</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * <span class="hljs-number">1.</span> Redistributions of source code must retain the above copyright
+ *    notice, <span class="hljs-keyword">this</span> <span class="hljs-built_in">list</span> of conditions and the following disclaimer.
+ * <span class="hljs-number">2.</span> Redistributions in binary form must reproduce the above copyright
+ *    notice, <span class="hljs-keyword">this</span> <span class="hljs-built_in">list</span> of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * <span class="hljs-number">3.</span> Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from <span class="hljs-keyword">this</span> software
+ *    without specific prior written permission.
+ *</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * @(#)level.c	<span class="hljs-number">8.1</span> (Berkeley) <span class="hljs-number">5</span>/<span class="hljs-number">31</span>/<span class="hljs-number">93</span>
+ * $FreeBSD: src/games/rogue/level.c,v <span class="hljs-number">1.3</span> <span class="hljs-number">1999</span>/<span class="hljs-number">11</span>/<span class="hljs-number">30</span> <span class="hljs-number">03</span>:<span class="hljs-number">49</span>:<span class="hljs-number">23</span> billf Exp $
+ * $DragonFly: src/games/rogue/level.c,v <span class="hljs-number">1.4</span> <span class="hljs-number">2006</span>/<span class="hljs-number">09</span>/<span class="hljs-number">02</span> <span class="hljs-number">19</span>:<span class="hljs-number">31</span>:<span class="hljs-number">07</span> pavalos Exp $
+ */</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * level.c
+ *</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> * This source herein may be modified and/or distributed by anybody who
+ * so desires, with the following restrictions:
+ *    <span class="hljs-number">1.</span>)  No portion of <span class="hljs-keyword">this</span> notice shall be removed.
+ *    <span class="hljs-number">2.</span>)  Credit shall not be taken <span class="hljs-keyword">for</span> the creation of <span class="hljs-keyword">this</span> source.
+ *    <span class="hljs-number">3.</span>)  This code is not to be traded, sold, or used <span class="hljs-keyword">for</span> personal
+ *         gain or profit.
+ *</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> */</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-string">"rogue.h"</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> swap(x,y) {t = x; x = y; y = t;}</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">add_mazes</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> boolean	<span class="hljs-title">connect_rooms</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">draw_simple_passage</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">fill_it</span><span class="hljs-params">(<span class="hljs-keyword">int</span>, boolean)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">fill_out_level</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span>	<span class="hljs-title">get_exp_level</span><span class="hljs-params">(<span class="hljs-keyword">long</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">hide_boxed_passage</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">make_maze</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">make_room</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> boolean	<span class="hljs-title">mask_room</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span> *, <span class="hljs-keyword">short</span> *, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">mix_random_rooms</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">put_door</span><span class="hljs-params">(room *, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span> *, <span class="hljs-keyword">short</span> *)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>	<span class="hljs-title">recursive_deadend</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">const</span> <span class="hljs-keyword">short</span> *, <span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> boolean	<span class="hljs-title">same_col</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> boolean	<span class="hljs-title">same_row</span><span class="hljs-params">(<span class="hljs-keyword">short</span>, <span class="hljs-keyword">short</span>)</span></span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">short</span> cur_level = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">short</span> max_level = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">short</span> cur_room;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *new_level_message = <span class="hljs-literal">NULL</span>;
+<span class="hljs-keyword">short</span> party_room = NO_ROOM;
+<span class="hljs-keyword">short</span> r_de;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> <span class="hljs-keyword">long</span> level_points[MAX_EXP_LEVEL] = {
+		  <span class="hljs-number">10L</span>,
+		  <span class="hljs-number">20L</span>,
+		  <span class="hljs-number">40L</span>,
+		  <span class="hljs-number">80L</span>,
+		 <span class="hljs-number">160L</span>,
+		 <span class="hljs-number">320L</span>,
+		 <span class="hljs-number">640L</span>,
+		<span class="hljs-number">1300L</span>,
+		<span class="hljs-number">2600L</span>,
+		<span class="hljs-number">5200L</span>,
+	   <span class="hljs-number">10000L</span>,
+	   <span class="hljs-number">20000L</span>,
+	   <span class="hljs-number">40000L</span>,
+	   <span class="hljs-number">80000L</span>,
+	  <span class="hljs-number">160000L</span>,
+	  <span class="hljs-number">320000L</span>,
+	 <span class="hljs-number">1000000L</span>,
+	 <span class="hljs-number">3333333L</span>,
+	 <span class="hljs-number">6666666L</span>,
+	  MAX_EXP,
+	<span class="hljs-number">99900000L</span>
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">short</span> random_rooms[MAXROOMS] = {<span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">extern</span> boolean being_held, wizard, detect_monster;
+<span class="hljs-keyword">extern</span> boolean see_invisible;
+<span class="hljs-keyword">extern</span> <span class="hljs-keyword">short</span> bear_trap, levitate, extra_hp, less_hp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">make_level</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, j;
+	<span class="hljs-keyword">short</span> must_1, must_2 = <span class="hljs-number">0</span>, must_3 = <span class="hljs-number">0</span>;
+	boolean big_room;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (cur_level &lt; LAST_DUNGEON) {
+		cur_level++;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (cur_level &gt; max_level) {
+		max_level = cur_level;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	must_1 = get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">switch</span>(must_1) {
+	<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+		must_1 = <span class="hljs-number">0</span>;
+		must_2 = <span class="hljs-number">1</span>;
+		must_3 = <span class="hljs-number">2</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+		must_1 = <span class="hljs-number">3</span>;
+		must_2 = <span class="hljs-number">4</span>;
+		must_3 = <span class="hljs-number">5</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+		must_1 = <span class="hljs-number">6</span>;
+		must_2 = <span class="hljs-number">7</span>;
+		must_3 = <span class="hljs-number">8</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+		must_1 = <span class="hljs-number">0</span>;
+		must_2 = <span class="hljs-number">3</span>;
+		must_3 = <span class="hljs-number">6</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+		must_1 = <span class="hljs-number">1</span>;
+		must_2 = <span class="hljs-number">4</span>;
+		must_3 = <span class="hljs-number">7</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:
+		must_1 = <span class="hljs-number">2</span>;
+		must_2 = <span class="hljs-number">5</span>;
+		must_3 = <span class="hljs-number">8</span>;
+		<span class="hljs-keyword">break</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (rand_percent(<span class="hljs-number">8</span>)) {
+		party_room = <span class="hljs-number">0</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	big_room = ((party_room != NO_ROOM) &amp;&amp; rand_percent(<span class="hljs-number">1</span>));
+	<span class="hljs-keyword">if</span> (big_room) {
+		make_room(BIG_ROOM, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAXROOMS; i++) {
+			make_room(i, must_1, must_2, must_3);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!big_room) {
+		add_mazes();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		mix_random_rooms();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; MAXROOMS; j++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			i = random_rooms[j];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (i &lt; (MAXROOMS<span class="hljs-number">-1</span>)) {
+				connect_rooms(i, i+<span class="hljs-number">1</span>);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (i &lt; (MAXROOMS<span class="hljs-number">-3</span>)) {
+				connect_rooms(i, i+<span class="hljs-number">3</span>);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (i &lt; (MAXROOMS<span class="hljs-number">-2</span>)) {
+				<span class="hljs-keyword">if</span> (rooms[i+<span class="hljs-number">1</span>].is_room &amp; R_NOTHING) {
+					<span class="hljs-keyword">if</span> (connect_rooms(i, i+<span class="hljs-number">2</span>)) {
+						rooms[i+<span class="hljs-number">1</span>].is_room = R_CROSS;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (i &lt; (MAXROOMS<span class="hljs-number">-6</span>)) {
+				<span class="hljs-keyword">if</span> (rooms[i+<span class="hljs-number">3</span>].is_room &amp; R_NOTHING) {
+					<span class="hljs-keyword">if</span> (connect_rooms(i, i+<span class="hljs-number">6</span>)) {
+						rooms[i+<span class="hljs-number">3</span>].is_room = R_CROSS;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">if</span> (is_all_connected()) {
+				<span class="hljs-keyword">break</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		fill_out_level();
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!has_amulet() &amp;&amp; (cur_level &gt;= AMULET_LEVEL)) {
+		put_amulet();
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">make_room</span><span class="hljs-params">(<span class="hljs-keyword">short</span> rn, <span class="hljs-keyword">short</span> r1, <span class="hljs-keyword">short</span> r2, <span class="hljs-keyword">short</span> r3)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> left_col, right_col, top_row, bottom_row;
+	<span class="hljs-keyword">short</span> width, height;
+	<span class="hljs-keyword">short</span> row_offset, col_offset;
+	<span class="hljs-keyword">short</span> i, j, ch;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	left_col = right_col = top_row = bottom_row = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">switch</span>(rn) {
+	<span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+		left_col = <span class="hljs-number">0</span>;
+		right_col = COL1<span class="hljs-number">-1</span>;
+		top_row = MIN_ROW;
+		bottom_row = ROW1<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+		left_col = COL1+<span class="hljs-number">1</span>;
+		right_col = COL2<span class="hljs-number">-1</span>;
+		top_row = MIN_ROW;
+		bottom_row = ROW1<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+		left_col = COL2+<span class="hljs-number">1</span>;
+		right_col = DCOLS<span class="hljs-number">-1</span>;
+		top_row = MIN_ROW;
+		bottom_row = ROW1<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+		left_col = <span class="hljs-number">0</span>;
+		right_col = COL1<span class="hljs-number">-1</span>;
+		top_row = ROW1+<span class="hljs-number">1</span>;
+		bottom_row = ROW2<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+		left_col = COL1+<span class="hljs-number">1</span>;
+		right_col = COL2<span class="hljs-number">-1</span>;
+		top_row = ROW1+<span class="hljs-number">1</span>;
+		bottom_row = ROW2<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:
+		left_col = COL2+<span class="hljs-number">1</span>;
+		right_col = DCOLS<span class="hljs-number">-1</span>;
+		top_row = ROW1+<span class="hljs-number">1</span>;
+		bottom_row = ROW2<span class="hljs-number">-1</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">6</span>:
+		left_col = <span class="hljs-number">0</span>;
+		right_col = COL1<span class="hljs-number">-1</span>;
+		top_row = ROW2+<span class="hljs-number">1</span>;
+		bottom_row = DROWS - <span class="hljs-number">2</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">7</span>:
+		left_col = COL1+<span class="hljs-number">1</span>;
+		right_col = COL2<span class="hljs-number">-1</span>;
+		top_row = ROW2+<span class="hljs-number">1</span>;
+		bottom_row = DROWS - <span class="hljs-number">2</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">8</span>:
+		left_col = COL2+<span class="hljs-number">1</span>;
+		right_col = DCOLS<span class="hljs-number">-1</span>;
+		top_row = ROW2+<span class="hljs-number">1</span>;
+		bottom_row = DROWS - <span class="hljs-number">2</span>;
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> BIG_ROOM:
+		top_row = get_rand(MIN_ROW, MIN_ROW+<span class="hljs-number">5</span>);
+		bottom_row = get_rand(DROWS<span class="hljs-number">-7</span>, DROWS<span class="hljs-number">-2</span>);
+		left_col = get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>);
+		right_col = get_rand(DCOLS<span class="hljs-number">-11</span>, DCOLS<span class="hljs-number">-1</span>);
+		rn = <span class="hljs-number">0</span>;
+		<span class="hljs-keyword">goto</span> B;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	height = get_rand(<span class="hljs-number">4</span>, (bottom_row - top_row + <span class="hljs-number">1</span>));
+	width = get_rand(<span class="hljs-number">7</span>, (right_col - left_col - <span class="hljs-number">2</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	row_offset = get_rand(<span class="hljs-number">0</span>, ((bottom_row - top_row) - height + <span class="hljs-number">1</span>));
+	col_offset = get_rand(<span class="hljs-number">0</span>, ((right_col - left_col) - width + <span class="hljs-number">1</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	top_row += row_offset;
+	bottom_row = top_row + height - <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	left_col += col_offset;
+	right_col = left_col + width - <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ((rn != r1) &amp;&amp; (rn != r2) &amp;&amp; (rn != r3) &amp;&amp; rand_percent(<span class="hljs-number">40</span>)) {
+		<span class="hljs-keyword">goto</span> END;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>B:
+	rooms[rn].is_room = R_ROOM;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = top_row; i &lt;= bottom_row; i++) {
+		<span class="hljs-keyword">for</span> (j = left_col; j &lt;= right_col; j++) {
+			<span class="hljs-keyword">if</span> ((i == top_row) || (i == bottom_row)) {
+				ch = HORWALL;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (	((i != top_row) &amp;&amp; (i != bottom_row)) &amp;&amp;
+						((j == left_col) || (j == right_col))) {
+				ch = VERTWALL;
+			} <span class="hljs-keyword">else</span> {
+				ch = FLOOR;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			dungeon[i][j] = ch;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>END:
+	rooms[rn].top_row = top_row;
+	rooms[rn].bottom_row = bottom_row;
+	rooms[rn].left_col = left_col;
+	rooms[rn].right_col = right_col;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> boolean
+<span class="hljs-title">connect_rooms</span><span class="hljs-params">(<span class="hljs-keyword">short</span> room1, <span class="hljs-keyword">short</span> room2)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> row1, col1, row2, col2, dir;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ((!(rooms[room1].is_room &amp; (R_ROOM | R_MAZE))) ||
+		(!(rooms[room2].is_room &amp; (R_ROOM | R_MAZE)))) {
+		return(<span class="hljs-number">0</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (same_row(room1, room2) &amp;&amp;
+		(rooms[room1].left_col &gt; rooms[room2].right_col)) {
+		put_door(&amp;rooms[room1], LEFT, &amp;row1, &amp;col1);
+		put_door(&amp;rooms[room2], RIGHT, &amp;row2, &amp;col2);
+		dir = LEFT;
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (same_row(room1, room2) &amp;&amp;
+		(rooms[room2].left_col &gt; rooms[room1].right_col)) {
+		put_door(&amp;rooms[room1], RIGHT, &amp;row1, &amp;col1);
+		put_door(&amp;rooms[room2], LEFT, &amp;row2, &amp;col2);
+		dir = RIGHT;
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (same_col(room1, room2) &amp;&amp;
+		(rooms[room1].top_row &gt; rooms[room2].bottom_row)) {
+		put_door(&amp;rooms[room1], UPWARD, &amp;row1, &amp;col1);
+		put_door(&amp;rooms[room2], DOWN, &amp;row2, &amp;col2);
+		dir = UPWARD;
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (same_col(room1, room2) &amp;&amp;
+		(rooms[room2].top_row &gt; rooms[room1].bottom_row)) {
+		put_door(&amp;rooms[room1], DOWN, &amp;row1, &amp;col1);
+		put_door(&amp;rooms[room2], UPWARD, &amp;row2, &amp;col2);
+		dir = DOWN;
+	} <span class="hljs-keyword">else</span> {
+		return(<span class="hljs-number">0</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">do</span> {
+		draw_simple_passage(row1, col1, row2, col2, dir);
+	} <span class="hljs-keyword">while</span> (rand_percent(<span class="hljs-number">4</span>));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rooms[room1].doors[dir/<span class="hljs-number">2</span>].oth_room = room2;
+	rooms[room1].doors[dir/<span class="hljs-number">2</span>].oth_row = row2;
+	rooms[room1].doors[dir/<span class="hljs-number">2</span>].oth_col = col2;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rooms[room2].doors[(((dir+<span class="hljs-number">4</span>)%DIRS)/<span class="hljs-number">2</span>)].oth_room = room1;
+	rooms[room2].doors[(((dir+<span class="hljs-number">4</span>)%DIRS)/<span class="hljs-number">2</span>)].oth_row = row1;
+	rooms[room2].doors[(((dir+<span class="hljs-number">4</span>)%DIRS)/<span class="hljs-number">2</span>)].oth_col = col1;
+	return(<span class="hljs-number">1</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">clear_level</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, j;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAXROOMS; i++) {
+		rooms[i].is_room = R_NOTHING;
+		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>; j++) {
+			rooms[i].doors[j].oth_room = NO_ROOM;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX_TRAPS; i++) {
+		traps[i].trap_type = NO_TRAP;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-78">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; DROWS; i++) {
+		<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; DCOLS; j++) {
+			dungeon[i][j] = NOTHING;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-79">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-79">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-80">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	detect_monster = see_invisible = <span class="hljs-number">0</span>;
+	bear_trap = being_held = <span class="hljs-number">0</span>;
+	party_room = NO_ROOM;
+	rogue.row = rogue.col = <span class="hljs-number">-1</span>;
+	clear();
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-82">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">put_door</span><span class="hljs-params">(room *rm, <span class="hljs-keyword">short</span> dir, <span class="hljs-keyword">short</span> *row, <span class="hljs-keyword">short</span> *col)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-83">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-83">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> wall_width;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-84">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-84">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	wall_width = (rm-&gt;is_room &amp; R_MAZE) ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-85">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">switch</span>(dir) {
+	<span class="hljs-keyword">case</span> UPWARD:
+	<span class="hljs-keyword">case</span> DOWN:
+		*row = ((dir == UPWARD) ? rm-&gt;top_row : rm-&gt;bottom_row);
+		<span class="hljs-keyword">do</span> {
+			*col = get_rand(rm-&gt;left_col+wall_width,
+				rm-&gt;right_col-wall_width);
+		} <span class="hljs-keyword">while</span> (!(dungeon[*row][*col] &amp; (HORWALL | TUNNEL)));
+		<span class="hljs-keyword">break</span>;
+	<span class="hljs-keyword">case</span> RIGHT:
+	<span class="hljs-keyword">case</span> LEFT:
+		*col = (dir == LEFT) ? rm-&gt;left_col : rm-&gt;right_col;
+		<span class="hljs-keyword">do</span> {
+			*row = get_rand(rm-&gt;top_row+wall_width,
+				rm-&gt;bottom_row-wall_width);
+		} <span class="hljs-keyword">while</span> (!(dungeon[*row][*col] &amp; (VERTWALL | TUNNEL)));
+		<span class="hljs-keyword">break</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-86">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (rm-&gt;is_room &amp; R_ROOM) {
+		dungeon[*row][*col] = DOOR;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-87">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-87">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ((cur_level &gt; <span class="hljs-number">2</span>) &amp;&amp; rand_percent(HIDE_PERCENT)) {
+		dungeon[*row][*col] |= HIDDEN;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-88">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-88">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rm-&gt;doors[dir/<span class="hljs-number">2</span>].door_row = *row;
+	rm-&gt;doors[dir/<span class="hljs-number">2</span>].door_col = *col;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-89">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-89">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-90">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-90">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">draw_simple_passage</span><span class="hljs-params">(<span class="hljs-keyword">short</span> row1, <span class="hljs-keyword">short</span> col1, <span class="hljs-keyword">short</span> row2, <span class="hljs-keyword">short</span> col2, <span class="hljs-keyword">short</span> dir)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-91">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-91">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, middle, t;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-92">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-92">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> ((dir == LEFT) || (dir == RIGHT)) {
+		<span class="hljs-keyword">if</span> (col1 &gt; col2) {
+			swap(row1, row2);
+			swap(col1, col2);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-93">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-93">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		middle = get_rand(col1+<span class="hljs-number">1</span>, col2<span class="hljs-number">-1</span>);
+		<span class="hljs-keyword">for</span> (i = col1+<span class="hljs-number">1</span>; i != middle; i++) {
+			dungeon[row1][i] = TUNNEL;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-94">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-94">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (i = row1; i != row2; i += (row1 &gt; row2) ? <span class="hljs-number">-1</span> : <span class="hljs-number">1</span>) {
+			dungeon[i][middle] = TUNNEL;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-95">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-95">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (i = middle; i != col2; i++) {
+			dungeon[row2][i] = TUNNEL;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-96">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-96">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">if</span> (row1 &gt; row2) {
+			swap(row1, row2);
+			swap(col1, col2);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-97">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-97">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		middle = get_rand(row1+<span class="hljs-number">1</span>, row2<span class="hljs-number">-1</span>);
+		<span class="hljs-keyword">for</span> (i = row1+<span class="hljs-number">1</span>; i != middle; i++) {
+			dungeon[i][col1] = TUNNEL;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-98">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-98">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (i = col1; i != col2; i += (col1 &gt; col2) ? <span class="hljs-number">-1</span> : <span class="hljs-number">1</span>) {
+			dungeon[middle][i] = TUNNEL;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-99">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-99">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (i = middle; i != row2; i++) {
+			dungeon[i][col2] = TUNNEL;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-100">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-100">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-101">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-101">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (rand_percent(HIDE_PERCENT)) {
+		hide_boxed_passage(row1, col1, row2, col2, <span class="hljs-number">1</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-102">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-102">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-103">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-103">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-104">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-104">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> boolean
+<span class="hljs-title">same_row</span><span class="hljs-params">(<span class="hljs-keyword">short</span> room1, <span class="hljs-keyword">short</span> room2)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-105">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-105">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	return((room1 / <span class="hljs-number">3</span>) == (room2 / <span class="hljs-number">3</span>));
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-106">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-106">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-107">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-107">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> boolean
+<span class="hljs-title">same_col</span><span class="hljs-params">(<span class="hljs-keyword">short</span> room1, <span class="hljs-keyword">short</span> room2)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-108">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-108">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	return((room1 % <span class="hljs-number">3</span>) == (room2 % <span class="hljs-number">3</span>));
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-109">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-109">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-110">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-110">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">add_mazes</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-111">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-111">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, j;
+	<span class="hljs-keyword">short</span> start;
+	<span class="hljs-keyword">short</span> maze_percent;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-112">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-112">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (cur_level &gt; <span class="hljs-number">1</span>) {
+		start = get_rand(<span class="hljs-number">0</span>, (MAXROOMS<span class="hljs-number">-1</span>));
+		maze_percent = (cur_level * <span class="hljs-number">5</span>) / <span class="hljs-number">4</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-113">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-113">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (cur_level &gt; <span class="hljs-number">15</span>) {
+			maze_percent += cur_level;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-114">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-114">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAXROOMS; i++) {
+			j = ((start + i) % MAXROOMS);
+			<span class="hljs-keyword">if</span> (rooms[j].is_room &amp; R_NOTHING) {
+				<span class="hljs-keyword">if</span> (rand_percent(maze_percent)) {
+				rooms[j].is_room = R_MAZE;
+				make_maze(get_rand(rooms[j].top_row+<span class="hljs-number">1</span>, rooms[j].bottom_row<span class="hljs-number">-1</span>),
+					get_rand(rooms[j].left_col+<span class="hljs-number">1</span>, rooms[j].right_col<span class="hljs-number">-1</span>),
+					rooms[j].top_row, rooms[j].bottom_row,
+					rooms[j].left_col, rooms[j].right_col);
+				hide_boxed_passage(rooms[j].top_row, rooms[j].left_col,
+					rooms[j].bottom_row, rooms[j].right_col,
+					get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>));
+				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-115">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-115">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-116">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-116">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-117">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-117">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-118">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-118">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-119">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-119">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-120">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-120">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">fill_out_level</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-121">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-121">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, rn;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-122">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-122">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	mix_random_rooms();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-123">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-123">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	r_de = NO_ROOM;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-124">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-124">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAXROOMS; i++) {
+		rn = random_rooms[i];
+		<span class="hljs-keyword">if</span> ((rooms[rn].is_room &amp; R_NOTHING) ||
+			((rooms[rn].is_room &amp; R_CROSS) &amp;&amp; coin_toss())) {
+			fill_it(rn, <span class="hljs-number">1</span>);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-125">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-125">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-126">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-126">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (r_de != NO_ROOM) {
+		fill_it(r_de, <span class="hljs-number">0</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-127">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-127">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-128">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-128">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-129">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-129">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">fill_it</span><span class="hljs-params">(<span class="hljs-keyword">int</span> rn, boolean do_rec_de)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-130">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-130">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, tunnel_dir, door_dir, drow, dcol;
+	<span class="hljs-keyword">short</span> target_room, rooms_found = <span class="hljs-number">0</span>;
+	<span class="hljs-keyword">short</span> srow, scol, t;
+	<span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span> offsets[<span class="hljs-number">4</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">-3</span>};
+	boolean did_this = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-131">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-131">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+		srow = get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>);
+		scol = get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>);
+		t = offsets[srow];
+		offsets[srow] = offsets[scol];
+		offsets[scol] = t;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-132">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-132">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-133">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-133">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		target_room = rn + offsets[i];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-134">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-134">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (((target_room &lt; <span class="hljs-number">0</span>) || (target_room &gt;= MAXROOMS)) ||
+			(!(same_row(rn,target_room) || same_col(rn,target_room))) ||
+			(!(rooms[target_room].is_room &amp; (R_ROOM | R_MAZE)))) {
+			<span class="hljs-keyword">continue</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-135">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-135">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (same_row(rn, target_room)) {
+			tunnel_dir = (rooms[rn].left_col &lt; rooms[target_room].left_col) ?
+				RIGHT : LEFT;
+		} <span class="hljs-keyword">else</span> {
+			tunnel_dir = (rooms[rn].top_row &lt; rooms[target_room].top_row) ?
+				DOWN : UPWARD;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-136">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-136">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		door_dir = ((tunnel_dir + <span class="hljs-number">4</span>) % DIRS);
+		<span class="hljs-keyword">if</span> (rooms[target_room].doors[door_dir/<span class="hljs-number">2</span>].oth_room != NO_ROOM) {
+			<span class="hljs-keyword">continue</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-137">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-137">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (((!do_rec_de) || did_this) ||
+			(!mask_room(rn, &amp;srow, &amp;scol, TUNNEL))) {
+			srow = (rooms[rn].top_row + rooms[rn].bottom_row) / <span class="hljs-number">2</span>;
+			scol = (rooms[rn].left_col + rooms[rn].right_col) / <span class="hljs-number">2</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-138">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-138">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		put_door(&amp;rooms[target_room], door_dir, &amp;drow, &amp;dcol);
+		rooms_found++;
+		draw_simple_passage(srow, scol, drow, dcol, tunnel_dir);
+		rooms[rn].is_room = R_DEADEND;
+		dungeon[srow][scol] = TUNNEL;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-139">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-139">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ((i &lt; <span class="hljs-number">3</span>) &amp;&amp; (!did_this)) {
+			did_this = <span class="hljs-number">1</span>;
+			<span class="hljs-keyword">if</span> (coin_toss()) {
+				<span class="hljs-keyword">continue</span>;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-140">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-140">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-141">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-141">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ((rooms_found &lt; <span class="hljs-number">2</span>) &amp;&amp; do_rec_de) {
+			recursive_deadend(rn, offsets, srow, scol);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-142">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-142">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">break</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-143">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-143">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-144">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-144">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-145">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-145">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">recursive_deadend</span><span class="hljs-params">(<span class="hljs-keyword">short</span> rn, <span class="hljs-keyword">const</span> <span class="hljs-keyword">short</span> *offsets, <span class="hljs-keyword">short</span> srow, <span class="hljs-keyword">short</span> scol)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-146">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-146">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, de;
+	<span class="hljs-keyword">short</span> drow, dcol, tunnel_dir;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-147">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-147">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rooms[rn].is_room = R_DEADEND;
+	dungeon[srow][scol] = TUNNEL;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-148">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-148">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+		de = rn + offsets[i];
+		<span class="hljs-keyword">if</span> (((de &lt; <span class="hljs-number">0</span>) || (de &gt;= MAXROOMS)) ||
+			(!(same_row(rn, de) || same_col(rn, de)))) {
+			<span class="hljs-keyword">continue</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-149">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-149">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!(rooms[de].is_room &amp; R_NOTHING)) {
+			<span class="hljs-keyword">continue</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-150">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-150">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		drow = (rooms[de].top_row + rooms[de].bottom_row) / <span class="hljs-number">2</span>;
+		dcol = (rooms[de].left_col + rooms[de].right_col) / <span class="hljs-number">2</span>;
+		<span class="hljs-keyword">if</span> (same_row(rn, de)) {
+			tunnel_dir = (rooms[rn].left_col &lt; rooms[de].left_col) ?
+				RIGHT : LEFT;
+		} <span class="hljs-keyword">else</span> {
+			tunnel_dir = (rooms[rn].top_row &lt; rooms[de].top_row) ?
+				DOWN : UPWARD;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-151">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-151">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		draw_simple_passage(srow, scol, drow, dcol, tunnel_dir);
+		r_de = de;
+		recursive_deadend(de, offsets, drow, dcol);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-152">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-152">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-153">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-153">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-154">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-154">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> boolean
+<span class="hljs-title">mask_room</span><span class="hljs-params">(<span class="hljs-keyword">short</span> rn, <span class="hljs-keyword">short</span> *row, <span class="hljs-keyword">short</span> *col, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span> mask)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-155">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-155">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, j;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-156">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-156">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = rooms[rn].top_row; i &lt;= rooms[rn].bottom_row; i++) {
+		<span class="hljs-keyword">for</span> (j = rooms[rn].left_col; j &lt;= rooms[rn].right_col; j++) {
+			<span class="hljs-keyword">if</span> (dungeon[i][j] &amp; mask) {
+				*row = i;
+				*col = j;
+				return(<span class="hljs-number">1</span>);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-157">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-157">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-158">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-158">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-159">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-159">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	return(<span class="hljs-number">0</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-160">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-160">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-161">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-161">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">make_maze</span><span class="hljs-params">(<span class="hljs-keyword">short</span> r, <span class="hljs-keyword">short</span> c, <span class="hljs-keyword">short</span> tr, <span class="hljs-keyword">short</span> br, <span class="hljs-keyword">short</span> lc, <span class="hljs-keyword">short</span> rc)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-162">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-162">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">char</span> dirs[<span class="hljs-number">4</span>];
+	<span class="hljs-keyword">short</span> i, t;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-163">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-163">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	dirs[<span class="hljs-number">0</span>] = UPWARD;
+	dirs[<span class="hljs-number">1</span>] = DOWN;
+	dirs[<span class="hljs-number">2</span>] = LEFT;
+	dirs[<span class="hljs-number">3</span>] = RIGHT;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-164">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-164">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	dungeon[r][c] = TUNNEL;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-165">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-165">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (rand_percent(<span class="hljs-number">20</span>)) {
+		<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+			<span class="hljs-keyword">short</span> t1, t2;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-166">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-166">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			t1 = get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>);
+			t2 = get_rand(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-167">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-167">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			swap(dirs[t1], dirs[t2]);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-168">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-168">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-169">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-169">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+		<span class="hljs-keyword">switch</span>(dirs[i]) {
+		<span class="hljs-keyword">case</span> UPWARD:
+			<span class="hljs-keyword">if</span> (((r<span class="hljs-number">-1</span>) &gt;= tr) &amp;&amp;
+				(dungeon[r<span class="hljs-number">-1</span>][c] != TUNNEL) &amp;&amp;
+				(dungeon[r<span class="hljs-number">-1</span>][c<span class="hljs-number">-1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r<span class="hljs-number">-1</span>][c+<span class="hljs-number">1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r<span class="hljs-number">-2</span>][c] != TUNNEL)) {
+				make_maze((r<span class="hljs-number">-1</span>), c, tr, br, lc, rc);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-170">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-170">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">break</span>;
+		<span class="hljs-keyword">case</span> DOWN:
+			<span class="hljs-keyword">if</span> (((r+<span class="hljs-number">1</span>) &lt;= br) &amp;&amp;
+				(dungeon[r+<span class="hljs-number">1</span>][c] != TUNNEL) &amp;&amp;
+				(dungeon[r+<span class="hljs-number">1</span>][c<span class="hljs-number">-1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r+<span class="hljs-number">1</span>][c+<span class="hljs-number">1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r+<span class="hljs-number">2</span>][c] != TUNNEL)) {
+				make_maze((r+<span class="hljs-number">1</span>), c, tr, br, lc, rc);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-171">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-171">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">break</span>;
+		<span class="hljs-keyword">case</span> LEFT:
+			<span class="hljs-keyword">if</span> (((c<span class="hljs-number">-1</span>) &gt;= lc) &amp;&amp;
+				(dungeon[r][c<span class="hljs-number">-1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r<span class="hljs-number">-1</span>][c<span class="hljs-number">-1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r+<span class="hljs-number">1</span>][c<span class="hljs-number">-1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r][c<span class="hljs-number">-2</span>] != TUNNEL)) {
+				make_maze(r, (c<span class="hljs-number">-1</span>), tr, br, lc, rc);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-172">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-172">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">break</span>;
+		<span class="hljs-keyword">case</span> RIGHT:
+			<span class="hljs-keyword">if</span> (((c+<span class="hljs-number">1</span>) &lt;= rc) &amp;&amp;
+				(dungeon[r][c+<span class="hljs-number">1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r<span class="hljs-number">-1</span>][c+<span class="hljs-number">1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r+<span class="hljs-number">1</span>][c+<span class="hljs-number">1</span>] != TUNNEL) &amp;&amp;
+				(dungeon[r][c+<span class="hljs-number">2</span>] != TUNNEL)) {
+				make_maze(r, (c+<span class="hljs-number">1</span>), tr, br, lc, rc);
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-173">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-173">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">break</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-174">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-174">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-175">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-175">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-176">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-176">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-177">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-177">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">hide_boxed_passage</span><span class="hljs-params">(<span class="hljs-keyword">short</span> row1, <span class="hljs-keyword">short</span> col1, <span class="hljs-keyword">short</span> row2, <span class="hljs-keyword">short</span> col2, <span class="hljs-keyword">short</span> n)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-178">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-178">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, j, t;
+	<span class="hljs-keyword">short</span> row, col, row_cut, col_cut;
+	<span class="hljs-keyword">short</span> h, w;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-179">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-179">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (cur_level &gt; <span class="hljs-number">2</span>) {
+		<span class="hljs-keyword">if</span> (row1 &gt; row2) {
+			swap(row1, row2);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-180">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-180">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (col1 &gt; col2) {
+			swap(col1, col2);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-181">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-181">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		h = row2 - row1;
+		w = col2 - col1;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-182">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-182">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> ((w &gt;= <span class="hljs-number">5</span>) || (h &gt;= <span class="hljs-number">5</span>)) {
+			row_cut = ((h &gt;= <span class="hljs-number">2</span>) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);
+			col_cut = ((w &gt;= <span class="hljs-number">2</span>) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-183">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-183">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+				<span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">10</span>; j++) {
+					row = get_rand(row1 + row_cut, row2 - row_cut);
+					col = get_rand(col1 + col_cut, col2 - col_cut);
+					<span class="hljs-keyword">if</span> (dungeon[row][col] == TUNNEL) {
+						dungeon[row][col] |= HIDDEN;
+						<span class="hljs-keyword">break</span>;
+					}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-184">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-184">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-185">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-185">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-186">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-186">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-187">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-187">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-188">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-188">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-189">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-189">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-190">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-190">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">put_player</span><span class="hljs-params">(<span class="hljs-keyword">short</span> nr)</span>		<span class="hljs-comment">/* try not to put in this room */</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-191">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-191">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> rn = nr, misses;
+	<span class="hljs-keyword">short</span> row, col;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-192">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-192">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (misses = <span class="hljs-number">0</span>; ((misses &lt; <span class="hljs-number">2</span>) &amp;&amp; (rn == nr)); misses++) {
+		gr_row_col(&amp;row, &amp;col, (FLOOR | TUNNEL | OBJECT | STAIRS));
+		rn = get_room_number(row, col);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-193">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-193">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rogue.row = row;
+	rogue.col = col;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-194">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-194">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (dungeon[rogue.row][rogue.col] &amp; TUNNEL) {
+		cur_room = PASSAGE;
+	} <span class="hljs-keyword">else</span> {
+		cur_room = rn;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-195">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-195">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (cur_room != PASSAGE) {
+		light_up_room(cur_room);
+	} <span class="hljs-keyword">else</span> {
+		light_passage(rogue.row, rogue.col);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-196">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-196">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rn = get_room_number(rogue.row, rogue.col);
+	wake_room(rn, <span class="hljs-number">1</span>, rogue.row, rogue.col);
+	<span class="hljs-keyword">if</span> (new_level_message) {
+		message(new_level_message, <span class="hljs-number">0</span>);
+		new_level_message = <span class="hljs-literal">NULL</span>;
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-197">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-197">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	mvaddch(rogue.row, rogue.col, rogue.fchar);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-198">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-198">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-199">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-199">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">boolean
+<span class="hljs-title">drop_check</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-200">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-200">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (wizard) {
+		return(<span class="hljs-number">1</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-201">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-201">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (dungeon[rogue.row][rogue.col] &amp; STAIRS) {
+		<span class="hljs-keyword">if</span> (levitate) {
+			message(<span class="hljs-string">"you're floating in the air!"</span>, <span class="hljs-number">0</span>);
+			return(<span class="hljs-number">0</span>);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-202">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-202">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		return(<span class="hljs-number">1</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-203">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-203">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	message(<span class="hljs-string">"I see no way down"</span>, <span class="hljs-number">0</span>);
+	return(<span class="hljs-number">0</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-204">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-204">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-205">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-205">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">boolean
+<span class="hljs-title">check_up</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-206">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-206">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (!wizard) {
+		<span class="hljs-keyword">if</span> (!(dungeon[rogue.row][rogue.col] &amp; STAIRS)) {
+			message(<span class="hljs-string">"I see no way up"</span>, <span class="hljs-number">0</span>);
+			return(<span class="hljs-number">0</span>);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-207">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-207">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">if</span> (!has_amulet()) {
+			message(<span class="hljs-string">"your way is magically blocked"</span>, <span class="hljs-number">0</span>);
+			return(<span class="hljs-number">0</span>);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-208">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-208">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-209">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-209">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	new_level_message = <span class="hljs-string">"you feel a wrenching sensation in your gut"</span>;
+	<span class="hljs-keyword">if</span> (cur_level == <span class="hljs-number">1</span>) {
+		win();
+	} <span class="hljs-keyword">else</span> {
+		cur_level -= <span class="hljs-number">2</span>;
+		return(<span class="hljs-number">1</span>);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-210">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-210">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	return(<span class="hljs-number">0</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-211">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-211">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-212">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-212">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">add_exp</span><span class="hljs-params">(<span class="hljs-keyword">int</span> e, boolean promotion)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-213">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-213">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">char</span> mbuf[<span class="hljs-number">40</span>];
+	<span class="hljs-keyword">short</span> new_exp;
+	<span class="hljs-keyword">short</span> i, hp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-214">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-214">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	rogue.exp_points += e;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-215">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-215">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (rogue.exp_points &gt;= level_points[rogue.<span class="hljs-built_in">exp</span><span class="hljs-number">-1</span>]) {
+		new_exp = get_exp_level(rogue.exp_points);
+		<span class="hljs-keyword">if</span> (rogue.exp_points &gt; MAX_EXP) {
+			rogue.exp_points = MAX_EXP + <span class="hljs-number">1</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-216">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-216">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">for</span> (i = rogue.<span class="hljs-built_in">exp</span>+<span class="hljs-number">1</span>; i &lt;= new_exp; i++) {
+			<span class="hljs-built_in">sprintf</span>(mbuf, <span class="hljs-string">"welcome to level %d"</span>, i);
+			message(mbuf, <span class="hljs-number">0</span>);
+			<span class="hljs-keyword">if</span> (promotion) {
+				hp = hp_raise();
+				rogue.hp_current += hp;
+				rogue.hp_max += hp;
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-217">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-217">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			rogue.<span class="hljs-built_in">exp</span> = i;
+			print_stats(STAT_HP | STAT_EXP);
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-218">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-218">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	} <span class="hljs-keyword">else</span> {
+		print_stats(STAT_EXP);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-219">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-219">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-220">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-220">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-221">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-221">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span>
+<span class="hljs-title">get_exp_level</span><span class="hljs-params">(<span class="hljs-keyword">long</span> e)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-222">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-222">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-223">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-223">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; (MAX_EXP_LEVEL - <span class="hljs-number">1</span>); i++) {
+		<span class="hljs-keyword">if</span> (level_points[i] &gt; e) {
+			<span class="hljs-keyword">break</span>;
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-224">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-224">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-225">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-225">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	return(i+<span class="hljs-number">1</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-226">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-226">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-227">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-227">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">int</span>
+<span class="hljs-title">hp_raise</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-228">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-228">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">int</span> hp;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-229">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-229">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	hp = (wizard ? <span class="hljs-number">10</span> : get_rand(<span class="hljs-number">3</span>, <span class="hljs-number">10</span>));
+	return(hp);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-230">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-230">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-231">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-231">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">void</span>
+<span class="hljs-title">show_average_hp</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-232">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-232">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">char</span> mbuf[<span class="hljs-number">80</span>];
+	<span class="hljs-keyword">float</span> real_average;
+	<span class="hljs-keyword">float</span> effective_average;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-233">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-233">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span> (rogue.<span class="hljs-built_in">exp</span> == <span class="hljs-number">1</span>) {
+		real_average = effective_average = <span class="hljs-number">0.00</span>;
+	} <span class="hljs-keyword">else</span> {
+		real_average = (float)
+			((rogue.hp_max - extra_hp - INIT_HP) + less_hp) / (rogue.exp - <span class="hljs-number">1</span>);
+		effective_average = (float)(rogue.hp_max - INIT_HP) / (rogue.exp - <span class="hljs-number">1</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-234">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-234">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-235">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-235">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-built_in">sprintf</span>(mbuf, <span class="hljs-string">"R-Hp: %.2f, E-Hp: %.2f (!: %d, V: %d)"</span>, real_average,
+		effective_average, extra_hp, less_hp);
+	message(mbuf, <span class="hljs-number">0</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-236">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-236">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-237">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-237">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+<span class="hljs-title">mix_random_rooms</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-238">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-238">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">short</span> i, t;
+	<span class="hljs-keyword">short</span> x, y;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-239">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-239">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">3</span> * MAXROOMS); i++) {
+		<span class="hljs-keyword">do</span> {
+			x = get_rand(<span class="hljs-number">0</span>, (MAXROOMS<span class="hljs-number">-1</span>));
+			y = get_rand(<span class="hljs-number">0</span>, (MAXROOMS<span class="hljs-number">-1</span>));
+		} <span class="hljs-keyword">while</span> (x == y);
+		swap(random_rooms[x], random_rooms[y]);
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-240">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-240">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-241">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-241">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-242">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-242">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
