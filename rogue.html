@@ -838,6 +838,12 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
+                <p>
+                  Here's the definition of the object <code>struct</code>.
+                </p>
+                <p>
+                  This represents both items <strong>and</strong> monsters. C doesn't have classes or built-in inheritance, so the fields here just cover all of the possibilities for all of the entities. I haven't tried yet, but I think this makes it possible for a mod to exist in which you can put a monster in your pocket or an item can fight you.
+                </p>
               </div>
               
             </div>
@@ -885,6 +891,26 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
+                <p>
+                  This is a <a href="https://en.wikipedia.org/wiki/Typedef">typedef</a> that aliases the <a href="#section-38">struct with the tag "obj"</a> to "object". 
+                </p>
+                <p>
+                  Why? In C, you can define a <code>struct</code> and give it a tag, but when you use that struct as a variable type, you can't use just the tag. For example, if you create a <code>struct</code> tagged "robot", you can't just declare a variable via:
+                </p>
+                <p>
+                  <code>robot r = alloc_robot();</code>
+                </p>
+                <p>
+                  It'd have to be:
+                </p>
+                <p>
+                  <code>struct robot r = alloc_robot();</code>
+                </p>
+                <p>Not only is that onerous (at least by my standards), it's confusing.
+                </p>
+                <p>
+                  So, it is customary to use a <code>typedef</code> to make it straightforward to declare instances of the struct. You make the tag another name that you don't intend to commonly use. In the Rogue code, it is "obj".  Then, you <code>typedef</code> it to the name you <strong>do</strong> want to commonly use. Hence, <code>typedef struct obj object;</code>. And that is why throughout the Rogue code, objects are declared with the easier-to-read <code>object variable_name</code> instead of <code>struct object variable_name</code>.
+                </p>
               </div>
               
             </div>
