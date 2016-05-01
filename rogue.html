@@ -159,21 +159,24 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
+
               </div>
-              
+
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*-
 </span></pre></div></div>
             
         </li>
-        
-        
+
         <li id="section-2">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+                <p>
+                  This header file contains struct definitions (they're like object templates), constants, and forward declarations that are meant to be accessible globally throughout the code.
+                </p>
               </div>
               
             </div>
@@ -750,6 +753,12 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
+                <p>
+                  This struct defines ids. Items in Rogue don't just have simple string names because the player is not always allowed to know what they are. Hence, there is a <code>const</code> (unchangeable) real name and a <code>title</code>, which is either a description like "a pink potion" or a "scroll named 'quippa boo'" or whatever the player has labeled it, like "warm juice". There's also a status flag that tells the game whether the item has been identified, unidentified, or called (labeled by the player) so that the <a href="inventory.html">inventory code</a> knows whether to display the real name or not.
+                </p>
+                <p>
+                  The <code>value</code> field here is the point or gold value of the item that id is associated with. It is used to computer the player's score when they die.
+                </p>
               </div>
               
             </div>
@@ -1321,7 +1330,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
                 <p>
-                  Here are some <a href="https://en.wikipedia.org/wiki/Forward_declaration">forward declarations</a>. This file needs them because it needs to refer to, say, <code>rooms</code>, but it doesn't want to define <code>rooms</code>. That's the job of <a href="room.html">room.c</a>.
+                  Here are some <a href="https://en.wikipedia.org/wiki/Forward_declaration">forward declarations</a>. This file needs them because it needs to refer to, say, <code>rooms</code>, but it doesn't want to define <code>rooms</code>. That's the job of <a href="room.html">room.c</a>. Yet, the compiler requires references to either be defined in the file or declared with <code>extern</code>. (At <a href="https://en.wikipedia.org/wiki/Link_time">link time</a>, the linker makes sure that the references are actually defined somewhere.)
                 </p>
               </div>
               
