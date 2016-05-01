@@ -1019,7 +1019,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
                 <p>
-                  This struct for doors. Each <a href="room.html">room</a> has doors.
+                  The struct for doors. Each <a href="room.html">room</a> has doors. Each door has coordinates (<code>door_col</code>, <code>door_row</code>), the index of the room that the door goes to (<code>oth_room</code>), and the coordinates of the exit of the door (<code>oth_col</code>, <code>oth_row</code>). The <code>connect_rooms</code> function in <a href="level.html">level.c</a> always puts the exit opposite of the door's coordinates, but there's potential here for weird portals that send you somewhere other than the opposite side of the wall.
                 </p>
               </div>
               
