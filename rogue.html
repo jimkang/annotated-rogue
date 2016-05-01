@@ -954,7 +954,13 @@
                   This is the struct that defines a fighter. There is exactly one instance of a fighter in the game, and that is the eponymous Rogue.
                 </p>
                 <p>
-                  A fighter has one armor, one weapon, current and max hit points, current and max strength, gold, experience points, an experience level (<code>exp</code>), a position on the grid (<code>row</code> and(<code>col</code>), a character that representation on the grid (the famous "@"), and moves_left. TODO: What is moves_left? TODO: Why are armor and weapons pointers, but the pack is inline?
+                  A fighter has one armor, one weapon, current and max hit points, current and max strength, gold, experience points, an experience level (<code>exp</code>), a position on the grid (<code>row</code> and(<code>col</code>), a character that representation on the grid (the famous "@"), and moves_left.
+                </p>
+                <p>
+                  <code>pack</code>, <code>armor</code>, <code>weapon</code>, and the rings are all <a href="#section-38">objects</a>. However, <code>pack</code> is the only object that's in the <code>fighter</code> struct. The rest are <a href="https://www.cs.cf.ac.uk/Dave/C/node10.html">pointers</a>. Why? Because all of those struct members except for <code>pack</code> are references to objects inside of <a href="pack.html">pack</a>.
+                </p>
+                <p>
+                  <code>moves_left</code> is the number of moves that the fighter can make until death. Each normal move decrements <code>moves_left</code> by 1. When it reaches 0, the fighter dies. When the fighter eats food, it gets bumped up. This is the mechanism that prevents players from scouring every tile and healing to full before every fight. It creates the critical tension that makes them move on.
                 </p>
               </div>
               
@@ -997,6 +1003,7 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
+                A <a href="#section-40">typedef</a> for readability.
               </div>
               
             </div>
