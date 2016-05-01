@@ -1067,6 +1067,9 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
+                <p>
+                  The struct that defines a room. The struct has room for up to four <a href="#section-45">doors</a>. It has bounds for the bottom, right, left, and top of the room. And it has a handy <code>is_room</code> flag so that you can tell if an object is a room since there's no class types in C.
+                </p>
               </div>
               
             </div>
@@ -1270,6 +1273,10 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-61">&#182;</a>
+                <p>
+                  Traps have a type and coordinates. The rest of the workings of traps are in <a href="trap.html">trap.c</a>.
+                   defines the rest of the workings of traps.
+                </p>
               </div>
               
             </div>
@@ -1313,6 +1320,9 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
+                <p>
+                  Here are some <a href="https://en.wikipedia.org/wiki/Forward_declaration">forward declarations</a>. This file needs them because it needs to refer to, say, <code>rooms</code>, but it doesn't want to define <code>rooms</code>. That's the job of <a href="room.html">room.c</a>.
+                </p>
               </div>
               
             </div>
