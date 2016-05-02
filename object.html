@@ -378,15 +378,51 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
+                <p>
+                  Some important variables used by many functions in this file.
+                </p>
               </div>
               
             </div>
             
             <div class="content"><div class='highlight'><pre>object level_objects;
 <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span> dungeon[DROWS][DCOLS];
-<span class="hljs-keyword">short</span> foods = <span class="hljs-number">0</span>;
-object *free_list = <span class="hljs-literal">NULL</span>;
-<span class="hljs-keyword">char</span> *fruit = <span class="hljs-literal">NULL</span>;</pre></div></div>
+<span class="hljs-keyword">short</span> foods = <span class="hljs-number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        <li id="section-free-list">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-free-list">&#182;</a>
+                <p>
+                  This is the head of a <a href="https://en.wikipedia.org/wiki/Linked_list">linked list</a> of pointers to objects that are no longer in use. It is maintained by the <a href="#section-147">alloc_object</a> and <a href="#section-152">free_object</a> functions.
+                </p>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'>
+              <pre>object *free_list = <span class="hljs-literal">NULL</span>;</pre>
+            </div></div>
+        </li>
+
+      <li id="section-free-list">
+          <div class="annotation">
+            
+            <div class="pilwrap ">
+              <a class="pilcrow" href="#section-free-list">&#182;</a>
+              <p>
+                Fruit! TODO: I don't know what this is.
+              </p>
+            </div>
+            
+          </div>
+            
+          <div class="content"><div class='highlight'>
+            <pre><span class="hljs-keyword">char</span> *fruit = <span class="hljs-literal">NULL</span>;</pre>
+          </div></div>
             
         </li>
         
@@ -1012,7 +1048,7 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>	obj = alloc_object();
+            <div class="content"><div class='highlight'><pre>	obj = <a href="#section-147">alloc_object</a>();
 	obj-&gt;row = row; obj-&gt;col = col;
 	obj-&gt;what_is = GOLD;
 	obj-&gt;quantity = get_rand((<span class="hljs-number">2</span> * cur_level), (<span class="hljs-number">16</span> * cur_level));
@@ -1526,7 +1562,9 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-83">&#182;</a>
-                <code>gr</code> means "generate" in Rogue. Hence, <code>gr_object</code> means "generate object".
+                <p>
+                  <code>gr</code> means "generate" in Rogue. Hence, <code>gr_object</code> means "generate object".
+                </p>
               </div>
               
             </div>
@@ -1543,6 +1581,9 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-84">&#182;</a>
+                <p>
+                  Essentially, this function fills out an <a href="rogue.html#section-38">object struct</a>.
+                </p>                
               </div>
               
             </div>
@@ -1561,7 +1602,7 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>	obj = alloc_object();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	obj = <a href="#section-147">alloc_object</a>();</pre></div></div>
             
         </li>
         
@@ -2593,6 +2634,9 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-147">&#182;</a>
+                <p>
+                  This is the function that allocates the memory for an <a href="file:///Users/jimkang/gcw/annotated-rogue/rogue.html#section-38">object</a>.
+                </p>
               </div>
               
             </div>
@@ -2609,6 +2653,9 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-148">&#182;</a>
+                <p>
+                  First, the function declares a <a href="https://www.cs.cf.ac.uk/Dave/C/node10.html">pointer</a>, a variable that will point to the object.
+                </p>
               </div>
               
             </div>
@@ -2623,6 +2670,12 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-149">&#182;</a>
+                <p>
+                  Then, the function checks <a href="#section-free-list">free_list</a> to see if there is an object that is "out of circulation" whose memory space can be reused. If there is, it points the <code>obj</code> pointer to that old object, then updates <code>free_list</code> so that the object that was next in the list is the new head of <code>free_list</code>, and the object is no longer tracked by <code>free_list</code>.
+                </p>
+                <p>
+                  If there isn't anything in <code>free_list</code>, then it asks <code>md_malloc</code> to allocate memory for the object. If that memory isn't available, then it prints a message to the screen saying so, then saves the current state of the game to a file. Very responsible!
+                <p>
               </div>
               
             </div>
@@ -2643,6 +2696,9 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-150">&#182;</a>
+                <p>
+                  It sets default settings for the new (or reused) object. (Huh. All objects do 1d1 damage by default.) And then it returns the pointer to the object, which will probably be used by <a href="#section-83">gr_object</a> and its subbordinates to override some of these default settings and perhaps fill in others.
+                </p>
               </div>
               
             </div>
@@ -2676,6 +2732,9 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-152">&#182;</a>
+                <p>
+                  Tracks objects that are no longer in use by adding them to the <a href="#section-free-list">free_list</a> linked list so that they can be reused later.
+                </p>
               </div>
               
             </div>
@@ -3065,7 +3124,7 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>	obj = alloc_object();
+            <div class="content"><div class='highlight'><pre>	obj = <a href="#section-147">alloc_object</a>();
 	obj-&gt;what_is = AMULET;
 	rand_place(obj);
 }</pre></div></div>
@@ -3262,7 +3321,7 @@ object *free_list = <span class="hljs-literal">NULL</span>;
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>	obj = alloc_object();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	obj = <a href="#section-147">alloc_object</a>();</pre></div></div>
             
         </li>
         
